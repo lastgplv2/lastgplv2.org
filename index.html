@@ -1,0 +1,31 @@
+<html>
+<title>Last GPLv2 releases of software.</title>
+
+<p>Back when GPLv3 came out and people still thought it was a good idea,
+a lot of packages switched away from GPLv2, which
+<a href=objections.html>not everybody was happy with</a>.</p>
+
+<p>Many people have been maintaining their own local forks of the
+last releases usable under GPLv2 code. This website is attempting to
+collecting and unify these forks, and maintain GPLv2 versions of
+interesting projects such as <a href=binutils.html>binutils</a>,
+<a href=gcc.html>gcc</a>, and <a href=gdb.html>gdb</a>.</p>
+
+<p>[TODO: figure out how to do https://help.github.com/articles/creating-releases/>github releases</a>
+in appropriate branches so we don't have to check binaries into here.]</p>
+
+<p>Binutils release magic: since "make dist" inexplicably doesn't work
+(because maintainers are _special_) the tarball was made via:</p>
+
+<blockquote><pre>
+git clean -fdx &&
+git checkout -f &&
+patch -p1 -i binutils-screwinfo.patch &&
+./configure --disable-werror &&
+make configure-host &&
+find . -name Makefile | xargs sed -i 's/^all:/& $(DIST_COMMON) $(EXTRA_DIST) $(DIST_SOURCES)/' &&
+make &&
+patch -p1 -Ri binutils-screwinfo.patch &&
+make distclean
+</pre></blockquote>
+</html>
